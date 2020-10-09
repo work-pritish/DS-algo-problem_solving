@@ -1,0 +1,49 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+bool isCyclic(vector<int> graph[], bool visited[], bool recStack[], int node)
+{
+  if(!visited[node])
+  {
+    visited[node] = true;
+    recStack[node] = true;
+    for(int each : graph[node])
+    {
+        if(!visited[each] && isCyclic(graph, visited, recStack, each))
+          return true;
+        else if(recStack[each])
+          return true;
+    }
+  }
+  recStack[node] = false;
+  return false;
+}
+
+int main()
+{
+  int v, e;
+  cin >> v >> e;
+  vector<int> graph[v + 1];
+  while(e--)
+  {
+    int u, v;
+    cin >> u >> v;
+    graph[u].push_back(v);
+  }
+  bool visited[v + 1] = {false};
+  bool recStack[v + 1] = {false};
+  bool flag = false;
+  for(int i = 1; i <= v; i++)
+  {
+    if(!visited[i] && isCyclic(graph, visited, recStack, i))
+    {  
+      flag  = true;
+      break;
+    }
+  }
+  if(flag)
+    cout << "cycle detected";
+  else
+    cout << "no cycle";
+  return 0;
+}
