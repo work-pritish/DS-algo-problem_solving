@@ -1,0 +1,10 @@
+
+def compare(tree, pos1, pos2):
+  if(pos1 < len(tree) and pos2 < len(tree) and tree[pos1] == tree[pos2]):
+    return compare(tree, 2 * pos1 + 1, 2 * pos2 + 2) and compare(tree, 2 * pos1 + 2, 2 * pos2 + 1)
+  if(pos1 >= len(tree) and pos2 >= len(tree)):
+    return True
+  return False
+
+tree = [x for x in input().split()]
+print(compare(tree, 0, 0))

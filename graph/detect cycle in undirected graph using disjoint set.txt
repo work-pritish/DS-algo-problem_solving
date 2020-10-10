@@ -1,0 +1,53 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+void make_set(int i, vector<int> &parent)
+{
+  parent[i] = i;
+}
+int find(vector<int> &parent, int x)
+{
+  if(x != parent[x])
+   parent[x] = find(parent, parent[x]);
+  return parent[x];
+}
+bool union_set(vector<int> &parent, int x, int y, vector<int> &rank)
+{
+  int rootX = find(parent, x);
+  int rootY = find(parent, y);
+  if(rootX == rootY)
+    return true;
+  if(rank[rootX] > rank[rootY])
+    parent[rootY] = rootX;
+  else
+  {
+    parent[rootX] = parent[rootY];
+    if(rank[rootX] == rank[rootY])
+      rank[rootY]++;
+  }
+  return false;
+}
+int main()
+{
+  int v, e;
+  cin >> v >> e;
+  vector<int> parent(v + 1);
+  for(int i = 0; i < v + 1; i++)
+    make_set(i, parent);
+  vector<int> rank(v + 1);
+  bool isCycle = false;
+  while(e--)
+  {
+    int x, y;
+    cin >> x >> y;
+    isCycle = union_set(parent, x, y, rank);
+    if(isCycle)
+      break;
+  }
+  if(isCycle)
+    cout << "Cycle detected";
+  else
+    cout << "No Cycle detected";
+
+  return 0;
+}
