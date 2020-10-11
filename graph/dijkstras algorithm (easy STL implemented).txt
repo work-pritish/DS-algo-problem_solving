@@ -1,0 +1,44 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+void dijkstra(vector<pair<int, int>> graph[], vector<int> &dist, int v)
+{
+  priority_queue<pair<int, int>, vector<pair<int, int>>, greater<pair<int, int>>> pq;
+  dist[0] = 0;
+  pq.push(make_pair(0, 0));
+  while(!pq.empty())
+  {
+    int curr_vertex = pq.top().second;
+    int curr_weight = pq.top().first;
+    pq.pop();
+    for(auto each : graph[curr_vertex])
+    {
+      if(dist[each.first] > curr_weight + each.second)
+      {
+        dist[each.first] = curr_weight + each.second;
+        pq.push(make_pair(dist[each.first], each.first));
+      }
+    } 
+  }
+
+}
+
+int main()
+{ 
+  int v, e;
+  cin >> v >> e;
+  vector<pair<int, int>> graph[v];
+  while(e--)
+  {
+    int x, y , w;
+    cin >> x >> y >> w;
+    graph[x].push_back(make_pair(y, w));
+    graph[y].push_back(make_pair(x, w)); 
+  }
+  vector<int> dist(v, INT_MAX);
+  dijkstra(graph, dist, v);
+  cout << "--------------------";
+  for(int i = 0; i < v; i++)
+    cout << i << " -> " << dist[i] << endl; 
+  return 0;
+}
