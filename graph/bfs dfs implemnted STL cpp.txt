@@ -23,7 +23,10 @@ void bfs(vector<vector<int>> &graph, vector<bool> &visited, int node)
     for(auto v : graph[q.front()])
     {
       if(visited[v] == false)
+      {
         q.push(v);
+        visited[v] = true;
+       }
     }
     q.pop();
   }
