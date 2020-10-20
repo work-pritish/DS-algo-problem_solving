@@ -1,0 +1,57 @@
+#include<bits/stdc++.h>
+using namespace std;
+
+//DFS method for topological sort
+//here stack contains topological sort
+void dfs(vector<int> graph[], int node, bool visited[], stack<int> &st)
+{
+     visited[node] = true;
+     for(auto each : graph[node])
+          if(!visited[each])
+               dfs(graph, each, visited, st);
+     st.push(node);
+}
+
+//kahn algorithm for topological sort
+//here BFS used
+void kahn(vector<int> graph[], vector<int> &degree)
+{
+     queue<int> q;
+     for(int i = 0; i < degree.size(); i++)
+          if(degree[i] == 0)
+               q.push(i);
+     while(!q.empty())
+     {
+          cout << q.front() << " ";
+          for(auto each : graph[q.front()])
+          {
+               --degree[each];
+               if(degree[each] == 0)
+                    q.push(each);
+          }
+          q.pop();
+     }
+}
+int main()
+{
+     int v, e;
+     cin >> v >> e;
+     vector<int> graph[v];
+     vector<int> degree(v, 0);
+     while(e--)
+     {
+          int x, y;
+          cin >> x >> y;
+          graph[x].push_back(y);
+     }
+     for(int i = 0; i < v; i++)
+     {
+          for(auto each : graph[i])
+               degree[each]++;
+     }
+     kahn(graph, degree);
+     return 0;
+}
+// 0 : 1
+// 1 : 2
+// 2 : 3
